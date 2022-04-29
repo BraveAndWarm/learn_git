@@ -2,6 +2,7 @@
     1.提交修改文件：
         git add git_learning.text
         git commit -m “I'm modifying this file”
+        # 如果没有add到stage里，就不会将文件加入到commit里
     2.查看工作区的状态：
         git status
     3.查看修改前后的差异：
@@ -21,7 +22,10 @@
     6.记录每一次命令：
         git reflog
         根据这个命令可以找到commit时的版本号，也就能回到任意一个已知版本号的版本。
+    7.查看工作区【当前】和版本库里最新版的区别：
+        git diff HEAD -- git_learning.txt
 二、基础知识
     1.工作区有一个隐藏目录.git，是Git的版本库。
         Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
         ⭐文件add之后，会存入stage暂存区里，再commit后才会存入master分支里。
+        如果把文件add进暂存区stage后再修改，提交，那么提交的这一版不包括add之后的的修改。
