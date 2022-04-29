@@ -24,6 +24,11 @@
         根据这个命令可以找到commit时的版本号，也就能回到任意一个已知版本号的版本。
     7.查看工作区【当前】和版本库里最新版的区别：
         git diff HEAD -- git_learning.txt
+    8.返回这次修改前的状态：
+        git checkout -- git_learning.txt
+        如果文件被放入stage里，则变为stage里的样子，如果还没放入stage里，则变为原来的样子。
+        git reset HEAD git_learning.txt
+        如果放入暂存区stage里了，这条命令可以把暂存区的修改撤销（unstage）掉，HEAD表示commit的最新版本
 二、基础知识
     1.工作区有一个隐藏目录.git，是Git的版本库。
         Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
