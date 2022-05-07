@@ -31,9 +31,12 @@
         如果放入暂存区stage里了，这条命令可以把暂存区的修改撤销（unstage）掉，HEAD表示commit的最新版本
     9.删除一个文件 test.txt
         git rm test.txt
+        # 把目录下的test.txt文件删除并增加到缓存区stage里
         git commit -m "remove test.txt"
 二、基础知识
     1.工作区有一个隐藏目录.git，是Git的版本库。
         Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
         ⭐文件add之后，会存入stage暂存区里，再commit后才会存入master分支里。
         如果把文件add进暂存区stage后再修改，提交，那么提交的这一版不包括add之后的的修改。
+    2.远程仓库
+        
