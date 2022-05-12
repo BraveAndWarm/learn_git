@@ -45,6 +45,11 @@
     12.在github新建一个库gitskills【知道这个就知道了仓库的地址了，之后才可以进行克隆】之后，克隆一个本地库：
         git clone git@github.com:BraveAndWarm/gitskills.git
         # 可以把远程仓库gitskills库克隆到本地【这是因为Git默认支持SSH协议（速度最快），不过还支持https等其他协议】
+    13.创建dev分支:
+        git checkout -b dev
+        #git checkout命令加上-b参数表示创建并切换，相当于以下两条命令:
+            git branch dev
+            git checkout dev
 二、基础知识
     1.工作区有一个隐藏目录.git，是Git的版本库。
         Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
