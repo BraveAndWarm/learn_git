@@ -50,6 +50,9 @@
         #git checkout命令加上-b参数表示创建并切换，相当于以下两条命令:
             git branch dev
             git checkout dev
+    14.查看当前分支：
+        git branch
+        # git branch命令会列出所有分支，当前分支前面会标一个*号。
 二、基础知识
     1.工作区有一个隐藏目录.git，是Git的版本库。
         Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
@@ -60,4 +63,3 @@
         1）在github上创建一个新仓库learn_git后，使用命令： 就将本地关联到github上的远程仓库了
             $ git remote add origin git@github.com:BraveAndWarm/learn_git.git
             # 添加关联后，远程库的名字就是origin（默认名字，也可以改成其他名字）。
-        2）
