@@ -74,4 +74,19 @@
     3.分支策略
         1）master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
         2）新建dev分支，大家都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
-        3）
+    4.bug修复
+        1）保存现场：
+            git stash
+            # 当手头工作还未完成时，把现场保存下来，以便切换分支
+            可以多次保存现场，恢复现场时，先用git stash list查看，然后恢复指定的stash：
+            git stash apply stash@{0}
+            # 用于恢复指定现场
+        2）保存现场，切换到master分支上，创建一个修改bug的分支issue-001，修复完成后提交，切换到master分支上，合并并删除issue-001分支
+            再回到原来的分支上，用 git stash list 查看刚才保存的现场【可以多次保存现场，git会用stash@{0}记录】。
+            git stash apply # 用于恢复刚刚保存的现场，恢复后stash内容并不删除，所以一般用下边的语句
+            git stash pop # 恢复刚刚现场的同时，把stash内容也删了
+        3）同样的bug，要在另一个分支dev也修复【假设修改bug的分支的提交号为4c805e2】
+            git cherry-pick 4c805e2
+            # 把分支issue-001的4c805e2提交“复制”到当前分支上
+    5.Feature分支
+    dev1
