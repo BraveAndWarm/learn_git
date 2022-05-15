@@ -52,7 +52,8 @@
             git branch dev
             git checkout dev # 切换到分支dev上，也可以用 git switch dev
         在dev分支上工作完成后【需要在dev分支上commit之后】，git checkout master 切换到master分支上，再用git merge dev 将dev分支合并到master上
-        合并完成后，就可以放心地删除dev分支了：git branch -d dev
+        合并完成后，就可以放心地删除dev分支了：
+        git branch -d dev
         # 如果两个分支有冲突，是合并不了的，必须手动解决冲突
         合并dev分支时，可以加--no-ff参数，表示禁用Fast forward【默认是这种模式，在这种模式下，删除分支后，会丢掉分支信息】：
             git merge --no-ff -m "merge with no-ff" dev
@@ -90,3 +91,4 @@
             # 把分支issue-001的4c805e2提交“复制”到当前分支上
     5.Feature分支
     dev1
+    dev3
