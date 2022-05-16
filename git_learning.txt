@@ -90,5 +90,3 @@
             git cherry-pick 4c805e2
             # 把分支issue-001的4c805e2提交“复制”到当前分支上
     5.Feature分支
-    dev1
-    dev3
