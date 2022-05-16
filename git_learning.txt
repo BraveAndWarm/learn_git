@@ -11,6 +11,7 @@
         git log
         可以加上参数 --pretty=oneline，只显示上次commit
         git log --pretty=oneline
+        git log --graph # 看分支合并图
     5.退回前一个commit版本：
         git reset --hard HEAD^
         HEAD指向的版本就是当前的版本，前两个版本是HEAD^^,前100个版本是HEAD~100
@@ -37,6 +38,30 @@
         git push -u origin main
         # 加 -u 是把本地的main分支和远程的main分支关联起来，后面只需要执行下面命令就可以把本地提交同步到远程了
         git push origin main
+    11.查看远程库信息：
+        git remote -v
+        删除远程库:
+        git remote rm origin
+        # 此处的“删除”其实是解除了本地和远程的绑定关系。
+    12.在github新建一个库gitskills【知道这个就知道了仓库的地址了，之后才可以进行克隆】之后，克隆一个本地库：
+        git clone git@github.com:BraveAndWarm/gitskills.git
+        # 可以把远程仓库gitskills库克隆到本地【这是因为Git默认支持SSH协议（速度最快），不过还支持https等其他协议】
+    13.创建dev分支:
+        git checkout -b dev         # 也可以用git switch -c dev
+        #git checkout命令加上-b参数表示创建并切换，相当于以下两条命令:
+            git branch dev
+            git checkout dev # 切换到分支dev上，也可以用 git switch dev
+        在dev分支上工作完成后【需要在dev分支上commit之后】，git checkout master 切换到master分支上，再用git merge dev 将dev分支合并到master上
+        合并完成后，就可以放心地删除dev分支了：
+        git branch -d dev
+        # 如果两个分支有冲突，是合并不了的，必须手动解决冲突
+        合并dev分支时，可以加--no-ff参数，表示禁用Fast forward【默认是这种模式，在这种模式下，删除分支后，会丢掉分支信息】：
+            git merge --no-ff -m "merge with no-ff" dev
+        【解释：合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并】
+        # 因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在master分支上工作效果是一样的，但过程更安全。
+    14.查看当前分支：
+        git branch
+        # git branch命令会列出所有分支，当前分支前面会标一个*号。
 二、基础知识
     1.工作区有一个隐藏目录.git，是Git的版本库。
         Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
@@ -46,5 +71,22 @@
         0）在GitHub上上传本地SSH的公匙（id_rsa.pub文件中的内容）。
         1）在github上创建一个新仓库learn_git后，使用命令： 就将本地关联到github上的远程仓库了
             $ git remote add origin git@github.com:BraveAndWarm/learn_git.git
-            添加关联后，远程库的名字就是origin。
-        2）
+            # 添加关联后，远程库的名字就是origin（默认名字，也可以改成其他名字）。
+    3.分支策略
+        1）master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
+        2）新建dev分支，大家都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
+    4.bug修复
+        1）保存现场：
+            git stash
+            # 当手头工作还未完成时，把现场保存下来，以便切换分支
+            可以多次保存现场，恢复现场时，先用git stash list查看，然后恢复指定的stash：
+            git stash apply stash@{0}
+            # 用于恢复指定现场
+        2）保存现场，切换到master分支上，创建一个修改bug的分支issue-001，修复完成后提交，切换到master分支上，合并并删除issue-001分支
+            再回到原来的分支上，用 git stash list 查看刚才保存的现场【可以多次保存现场，git会用stash@{0}记录】。
+            git stash apply # 用于恢复刚刚保存的现场，恢复后stash内容并不删除，所以一般用下边的语句
+            git stash pop # 恢复刚刚现场的同时，把stash内容也删了
+        3）同样的bug，要在另一个分支dev也修复【假设修改bug的分支的提交号为4c805e2】
+            git cherry-pick 4c805e2
+            # 把分支issue-001的4c805e2提交“复制”到当前分支上
+    5.Feature分支
