@@ -9,9 +9,16 @@
         git diff
     4.查看commit的历史记录：
         git log
-        可以加上参数 --pretty=oneline，只显示上次commit
+        可以加上参数 --pretty=oneline，只显示上次commit【git log --graph --pretty=oneline】
         git log --pretty=oneline
         git log --graph # 看分支合并图
+        1) * 582d922 (HEAD -> master) add author
+        * 8875536 add comment
+        * d1be385 (origin/master) init hello
+        (HEAD -> master)和(origin/master)标识出当前分支的HEAD和远程origin的位置分别是582d922 add author和d1be385 init hello.
+        2) 如果远端的分支被修改了，本地开发完成后推送到远程有冲突，需要先git pull 一下远程分支的提交，这时用git log --graph 查看就会出现分叉
+            可以用git rebase将整个提交历史变为一条直线【原理：先将最新的远程分支拉下来，再进行本地的提交，而不是在原始远程分支上先提交再下拉最新远程分支】
+            rebase的目的是使得我们在查看历史提交的变化时更容易，因为分叉的提交需要三方对比【原始远程分支，本地分支，最新远程分支】。
     5.退回前一个commit版本：
         git reset --hard HEAD^
         HEAD指向的版本就是当前的版本，前两个版本是HEAD^^,前100个版本是HEAD~100
@@ -34,34 +41,44 @@
         git rm test.txt
         # 把目录下的test.txt文件删除并增加到缓存区stage里
         git commit -m "remove test.txt"
-    10.把本地库的分支main推送到远程库origin上：
-        git push -u origin main
-        # 加 -u 是把本地的main分支和远程的main分支关联起来，后面只需要执行下面命令就可以把本地提交同步到远程了
-        git push origin main    # 本地和远端的分支名字都是main！
-    11.查看远程库信息：
-        git remote -v   # git remote 是查看远程库在本地的名称
-        删除远程库:
-        git remote rm origin
-        # 此处的“删除”其实是解除了本地和远程的绑定关系。
-    12.在github新建一个库gitskills【知道这个就知道了仓库的地址了，之后才可以进行克隆】之后，克隆一个本地库：
-        git clone git@github.com:BraveAndWarm/gitskills.git
-        # 可以把远程仓库gitskills库克隆到本地【这是因为Git默认支持SSH协议（速度最快），不过还支持https等其他协议】
-    13.创建dev分支:
-        git checkout -b dev         # 也可以用git switch -c dev
-        #git checkout命令加上-b参数表示创建并切换，相当于以下两条命令:
-            git branch dev
-            git checkout dev # 切换到分支dev上，也可以用 git switch dev
-        在dev分支上工作完成后【需要在dev分支上commit之后】，git checkout master 切换到master分支上，再用git merge dev 将dev分支合并到master上
-        合并完成后，就可以放心地删除dev分支了：
-        git branch -d dev
-        # 如果两个分支有冲突，是合并不了的，必须手动解决冲突
-        合并dev分支时，可以加--no-ff参数，表示禁用Fast forward【默认是这种模式，在这种模式下，删除分支后，会丢掉分支信息】：
-            git merge --no-ff -m "merge with no-ff" dev
-        【解释：合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并】
-        # 因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在master分支上工作效果是一样的，但过程更安全。
-    14.查看当前分支：
-        git branch
-        # git branch命令会列出所有分支，当前分支前面会标一个*号。
+    10.1) 把本地库的分支main推送到远程库origin上：
+            ⭐git push -u origin main
+            # 加 -u 是把本地的main分支和远程的main分支关联起来，后面只需要执行下面命令就可以把本地提交同步到远程了
+            git push origin main    # 本地和远端的分支名字都是main！【本地和远程分支的名称最好一致】
+        2) 查看远程库信息：
+            git remote -v   # git remote 是查看远程库在本地的名称
+            删除远程库:
+            git remote rm origin
+            # 此处的“删除”其实是解除了本地和远程的绑定关系。
+        3) 在github新建一个库gitskills【知道这个就知道了仓库的地址了，之后才可以进行克隆】之后，克隆一个本地库：
+            git clone git@github.com:BraveAndWarm/gitskills.git
+            # 可以把远程仓库gitskills库克隆到本地【这是因为Git默认支持SSH协议（速度最快），不过还支持https等其他协议】
+        4) 创建dev分支:
+            git checkout -b dev         # 也可以用git switch -c dev
+            #git checkout命令加上-b参数表示创建并切换，相当于以下两条命令:
+                git branch dev
+                git checkout dev # 切换到分支dev上，也可以用 git switch dev
+            在dev分支上工作完成后【需要在dev分支上commit之后】，git checkout master 切换到master分支上，再用git merge dev 将dev分支合并到master上
+            合并完成后，就可以放心地删除dev分支了：
+            git branch -d dev
+            # 如果两个分支有冲突，是合并不了的，必须手动解决冲突
+            合并dev分支时，可以加--no-ff参数，表示禁用Fast forward【默认是这种模式，在这种模式下，删除分支后，会丢掉分支信息】：
+                git merge --no-ff -m "merge with no-ff" dev
+            【解释：合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并】
+            # 因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在master分支上工作效果是一样的，但过程更安全。
+        5) 查看当前分支：
+            git branch
+            # git branch命令会列出所有分支，当前分支前面会标一个*号。
+        6) 将远程origin【主分支】/dev【分支】放到本地，并取名为dev。【origin/dev这个分支要事先存在】
+            git checkout -b dev origin/dev
+            如果与此同时，别人也向远端origin/dev推送了并且与你推送的有冲突，需要先用git pull把origin/dev的最新提交抓下来【】，抓下来之后需要手动解决冲突，解决后再提交。
+            【在此之前还需要git branch --set-upstream-to=origin/dev dev 将本地分支与远程分支链接起来】
+        7) 多人协作的工作模式
+            ①试图用git push origin <branch-name> 推送自己的修改
+            ②如果推送失败，则因为远程库更新，需要用git pull 试图合并
+            ③合并有冲突时，则解决冲突，并先在本地提交
+            ④没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功！
+            ⑤如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>
 二、基础知识
     1.工作区有一个隐藏目录.git，是Git的版本库。
         Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
